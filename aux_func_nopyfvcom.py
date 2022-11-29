@@ -1,6 +1,5 @@
 import numpy as np
 import datetime as dt
-import pytz
 
 def define_centroid_cross_section(cross_section_pts, fr_obj, res=50, search_res=100):
 
@@ -270,37 +269,6 @@ def node_to_centre(field, filereader):
         interped_out.append(ct(filereader.variables['xc'][:], filereader.variables['yc'][:]))
 
     return np.asarray(interped_out)
-
-def date_range(start_date, end_date, inc=1):
-    """
-    Make a list of datetimes from start_date to end_date (inclusive).
-
-    Parameters
-    ----------
-    start_date, end_date : datetime
-        Start and end time as datetime objects. `end_date' is inclusive.
-    inc : float, optional
-        Specify a time increment for the list of dates in days. If omitted,
-        defaults to 1 day.
-
-    Returns
-    -------
-    dates : list
-        List of datetimes.
-
-    """
-
-    start_seconds = int(start_date.replace(tzinfo=pytz.UTC).strftime('%s'))
-    end_seconds = int(end_date.replace(tzinfo=pytz.UTC).strftime('%s'))
-
-    inc *= 86400  # seconds
-    dates = np.arange(start_seconds, end_seconds, inc)
-    dates = [dt.datetime.utcfromtimestamp(d) for d in dates]
-    if dates[-1] != end_date:
-        dates += [end_date]
-    dates = np.array(dates)
-
-    return dates
 
 def get_plot_sqr(sqrs):
     all_out = []
